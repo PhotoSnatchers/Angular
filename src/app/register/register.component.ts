@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { ApplicationService } from '../application.service';
-import { HttpClientModule } from '@angular/common/http';
+import { ApplicationService } from '../../services/application.service';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -11,10 +10,10 @@ import { first } from 'rxjs/operators';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
+  registerResponse: any;
   constructor(
     private form: FormBuilder,
     private application: ApplicationService,
-    private http: HttpClientModule,
     ) {
     this.registerForm = this.form.group({
       name: [''],
@@ -33,6 +32,7 @@ export class RegisterComponent implements OnInit {
     this.application.registerUser(registerForm).pipe(first())
     .subscribe(
       (res: any) => {
-        console.log(res);
+        this.registerResponse = res.response;
       });
-  }}
+  }
+  }

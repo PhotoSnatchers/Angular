@@ -17,6 +17,18 @@ export class ApplicationService {
     private http: HttpClient,
   ) { }
 
+  login(form: any) {
+    let params = {
+      email: form.value.email,
+      password: form.value.password,
+    }
+    const url = 'http://localhost:3000/api/login';
+    return this.http.post<any>(url, params, httpOptions)
+    .pipe(map(data => {
+      return data;
+    }));
+  }
+
   registerUser(form: any) {
     let params = {
       name: form.value.name,
@@ -26,7 +38,7 @@ export class ApplicationService {
     const url = 'http://localhost:3000/api/registration';
     return this.http.post<any>(url, params, httpOptions)
     .pipe(map(data => {
-      return JSON.stringify(data);
+      return data;
     }));
   }
 

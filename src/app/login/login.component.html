@@ -1,0 +1,8 @@
+<form [formGroup] = "loginForm" (ngSubmit) = "onSubmit(loginForm)" >
+    <label>Email</label>
+    <input type = "text" id = "to" placeholder="Email" formControlName = "email"/>
+    <label>Password</label>
+    <input textarea = "text" placeholder="Password" id = "message" formControlName = "password">
+    <button type = "submit">LOGIN</button>
+    <div>{{loginResponse}}</div>
+</form>
