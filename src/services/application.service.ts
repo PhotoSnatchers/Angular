@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',
@@ -12,7 +13,7 @@ const httpOptions = {
 })
 
 export class ApplicationService {
-
+  public currentUser = new BehaviorSubject<any>('');
   constructor(
     private http: HttpClient,
   ) { }
@@ -25,8 +26,14 @@ export class ApplicationService {
     const url = 'http://localhost:3000/api/login';
     return this.http.post<any>(url, params, httpOptions)
     .pipe(map(data => {
+      localStorage.setItem('userData', JSON.stringify(data));
+      this.currentUser.next('userData');
       return data;
     }));
+  }
+
+  currentUserAsObservable() {
+    return this.currentUser.asObservable();
   }
 
   registerUser(form: any) {
