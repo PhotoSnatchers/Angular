@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-  })
-};
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +19,7 @@ export class ApplicationService {
       password: form.value.password,
     }
     const url = 'http://localhost:3000/api/login';
-    return this.http.post<any>(url, params, httpOptions)
+    return this.http.post<any>(url, params)
     .pipe(map(data => {
       localStorage.setItem('userData', JSON.stringify(data));
       this.currentUser.next('userData');
@@ -41,9 +36,10 @@ export class ApplicationService {
       name: form.value.name,
       email: form.value.email,
       password: form.value.password,
+      confirmPwd: form.value.confirmPwd,
     }
     const url = 'http://localhost:3000/api/registration';
-    return this.http.post<any>(url, params, httpOptions)
+    return this.http.post<any>(url, params)
     .pipe(map(data => {
       return data;
     }));
@@ -52,6 +48,19 @@ export class ApplicationService {
   viewUsers() {
     const url = 'http://localhost:3000/api';
     return this.http.get<any>(url)
+    .pipe(map(data => {
+      return data;
+    }));
+  }
+
+  forgetPwd(form: any) {
+    let params = {
+      email: form.value.email,
+      password: form.value.password,
+      confirmPwd: form.value.confirmPwd,
+    }
+    const url = 'http://localhost:3000/api/forgetPwd';
+    return this.http.put<any> (url, params)
     .pipe(map(data => {
       return data;
     }));
